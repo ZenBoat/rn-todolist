@@ -2,9 +2,12 @@ import React from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native'
 
 const TabBarItem = ({type, title, setType}) => {
+  const selected = (type == title) ? selectedTab.tab : null;
+  console.log(selected);
+
     return (
       <View style={styles.buttonContainer}>
-        <Button onPress={setType} style={styles.button} title={title}></Button>
+        <Button disabled={type == title} onPress={setType} style={selected} title={title}></Button>
       </View>
     );
 }
@@ -16,4 +19,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1
     }
+})
+
+const selectedTab = StyleSheet.create({
+  tab: {
+    fontWeight: "500",
+    color: 'white'
+  }
 })

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, TextInput, Button as ButtonRN } from 'react-native';
 import Heading from './Heading';
 import Input from './Input';
 import Button from './Button';
@@ -31,6 +31,7 @@ export default App = () => {
   const [todoItems, setTodoItems] = useState(initialTodoItems);
   const [inputValue, setInputValue] = useState('');
   const [type, setType] = useState('All');
+  const [darkMode, setDarkMode] = useState(false);
 
   const submitTodo = () => {
     if (inputValue.match(/^\s*$/)) {
@@ -65,23 +66,68 @@ export default App = () => {
       setTodoItems([...todos])
   }
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    console.log(darkMode)
+  }
+
+  const getStyle= (mode) => {
+    switch (mode) {
+      case false: 
+        return StyleSheet.create(lightStyle)
+      case true:
+        return StyleSheet.create(darkStyle)
+    }
+  }
+  
+  const styles = getStyle(darkMode);
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
         <Heading title='Eath' value={inputValue}></Heading>
-        <TodoList type={type} items={todoItems} toggleComplete={toggleComplete} deleteTodo={deleteTodo}></TodoList>
+        <TodoList
+          type={type}
+          items={todoItems}
+          toggleComplete={toggleComplete}
+          deleteTodo={deleteTodo}
+        ></TodoList>
         <Input setInputValue={setInputValue} inputValue={inputValue}></Input>
         <Button submitTodo={submitTodo}></Button>
+        <ButtonRN title='Darken' onPress={toggleDarkMode}></ButtonRN>
       </ScrollView>
-      <TabBar type={type} setType={setType} deleteTodo={deleteTodo} toggleComplete={toggleComplete}></TabBar>
+      <TabBar
+        type={type}
+        setType={setType}
+        deleteTodo={deleteTodo}
+        toggleComplete={toggleComplete}
+      ></TabBar>
       <View />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const lightStyle = StyleSheet.create({
   container: {
     backgroundColor: '#32d7fc',
+    flex: 1
+  },
+  content: {
+    flex: 1,
+    paddingTop: 40
+  },
+  todo: {
+    color: 'white',
+    paddingBottom: 20,
+    fontWeight: '300',
+    fontSize: 20,
+    textAlign: 'center'
+  }
+});
+
+const darkStyle = StyleSheet.create({
+  container: {
+    backgroundColor: '#000000',
     flex: 1
   },
   content: {
